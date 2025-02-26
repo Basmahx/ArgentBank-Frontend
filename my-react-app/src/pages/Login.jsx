@@ -1,14 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate(); // Hook to handle navigation
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Logging in with:", { username, password, rememberMe });
+
     // Handle authentication logic here
+    // If authentication is successful, navigate to the profile page
+    navigate("/profile"); // Redirect to the profile page after successful login
   };
 
   return (
