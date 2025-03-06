@@ -1,15 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSave = () => {
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {username}!
         </h1>
-        <button className="edit-button">Edit Name</button>
+        {isEditing ? (
+          <div className="edit-form">
+            <label>
+              User Name:
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+            <label>
+              First Name:
+              <input type="text" value={firstName} disabled />
+            </label>
+            <label>
+              Last Name:
+              <input type="text" value={lastName} disabled />
+            </label>
+
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleCancel}>Cancel</button>
+          </div>
+        ) : (
+          <button className="edit-button" onClick={() => setIsEditing(true)}>
+            Edit Name
+          </button>
+        )}
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
