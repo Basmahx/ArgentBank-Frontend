@@ -10,17 +10,15 @@ import "font-awesome/css/font-awesome.min.css";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Profile" element={<Profile />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Profile" element={<Profile />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 
