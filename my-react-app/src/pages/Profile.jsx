@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, changeUsername } from "../state/profile/UserSlice";
 import Account from "../components/Account";
+import Footer from "../components/Footer";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Profile = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main className="main bg-dark">
+    <main className="main">
       <div className="header">
         <h1>
           Welcome back
@@ -51,7 +52,8 @@ const Profile = () => {
           {profile?.firstName} {profile?.lastName}!
         </h1>
         {isEditing ? (
-          <form onSubmit={handleSave}>
+          <form onSubmit={handleSave} className="styled-form">
+            <h2>Edit user info</h2>
             <div className="form-group">
               <label htmlFor="userName">User Name:</label>
               <input
@@ -61,6 +63,7 @@ const Profile = () => {
                 onChange={(e) => setEditableUserName(e.target.value)}
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="firstName">First Name:</label>
               <input
@@ -71,6 +74,7 @@ const Profile = () => {
                 readOnly
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="lastName">Last Name:</label>
               <input
@@ -81,6 +85,7 @@ const Profile = () => {
                 readOnly
               />
             </div>
+
             <div className="form-actions">
               <button type="submit">Save</button>
               <button type="button" onClick={handleCancel}>
