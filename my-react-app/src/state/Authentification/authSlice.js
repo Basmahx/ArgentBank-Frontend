@@ -1,27 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUserAPI } from "./authAPI"; // Import API function
+import { loginUserAPI } from "./authAPI";
 
-// Async thunk for user login
+// l'asyncThunk (`loginUser`) effectue un appel API pour authentifier l'utilisateur et récupérer un token qui sera stocké dans le localStorage.
+// L'état initial vérifie si un utilisateur est déjà connecté en cherchant un token dans `localStorage`.
+// Le reducer va prendre l'action dispatché (`logout`) ainsi que l'état initial et supprimera le token de `localStorage`,
+// tout en mettant à jour l'état pour déconnecter l'utilisateur.
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      return await loginUserAPI(credentials);
+      const data = await loginUserAPI(credentials);
+
+      localStorage.setItem("token", data.body?.token || "");
+
+      return {
+        user: data.body, // Assuming user details are inside "body"
+        token: data.body?.token || "",
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-// Initial state
 const initialState = {
   user: null,
-  token: localStorage.getItem("token") || null, // Get token from localStorage
+  token: localStorage.getItem("token") || null,
   isLoading: false,
   error: null,
 };
 
-// Auth slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -31,7 +40,7 @@ const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem("token");
     },
-  },
+  }, // Les extra reducers mettent à jour l'état en fonction du cycle de vie (en attente, réussi, rejeté) du thunk asynchrone loginUser, garantissant ainsi un flux clair depuis l'initiation de l'appel API jusqu'au succès ou à l'échec.
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {

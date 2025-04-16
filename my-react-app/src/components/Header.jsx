@@ -1,18 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-// will retrieve authentication state
-// will alternate between login and logout
+import { logout } from "../state/Authentification/authSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Get authentication state from Redux store
+  const { token } = useSelector((state) => state.auth);
+  const isAuthenticated = !!token;
+  const { profile } = useSelector((state) => state.user);
+  const userName = profile?.username;
+
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    setTimeout(() => {
+      navigate("/");
+    }, 100);
   };
 
   return (
@@ -20,7 +25,7 @@ const Header = () => {
       <Link className="main-nav-logo" to="/">
         <img
           className="main-nav-logo-image"
-          src="public/assets/argentBankLogo.webp"
+          src="/assets/argentBankLogo.webp"
           alt="Argent Bank Logo"
         />
         <h1 className="sr-only">Argent Bank</h1>
@@ -32,14 +37,10 @@ const Header = () => {
               <i className="fa fa-user-circle"></i>
               {userName}
             </Link>
-            <button
-              className="main-nav-item"
-              onClick={(e) => {
-                e.preventDefault(), handleLogout();
-              }}>
+            <Link className="main-nav-item" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i>
               Sign out
-            </button>
+            </Link>
           </>
         ) : (
           <Link className="main-nav-item" to="/login">
