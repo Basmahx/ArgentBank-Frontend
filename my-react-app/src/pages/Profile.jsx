@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, changeUsername } from "../state/profile/UserSlice";
 import Account from "../components/Account";
-import Footer from "../components/Footer";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -44,7 +43,7 @@ const Profile = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main className="main">
+    <main className="main bg-dark ">
       <div className="header">
         <h1>
           Welcome back
@@ -100,6 +99,7 @@ const Profile = () => {
         )}
       </div>
       <h2 className="sr-only">Accounts</h2>
+
       <Account
         title="Argent Bank Checking (x8349)"
         amount="$2,082.79"
