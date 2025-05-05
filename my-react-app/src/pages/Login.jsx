@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../state/Authentification/authSlice";
+
+// error est récupéré depuis Redux pour afficher le message d'erreur.
+// handleSubmit envoie l’email et le mot de passe à Redux et va déclencher `loginUser` défini dans `authSlice`.
+// Si la connexion réussit, l’utilisateur est **redirigé vers `/profile`
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -11,14 +15,16 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const { error } = useSelector((state) => state.auth); // pour récupérer l’éventuelle erreur stockée dans Redux.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Logging in with:", { email, password });
+    setFormError(""); // Reset previous local error
 
     if (!email || !password) {
-      console.error("Email or password is missing!");
+      setFormError("Veuillez entrer votre email et votre mot de passe.");
       return;
     }
 
@@ -68,6 +74,8 @@ const Login = () => {
             Sign In
           </button>
         </form>
+        {formError && <p className="error-message">{formError}</p>}
+        {error && <p className="error-message">{error}</p>}
       </section>
     </main>
   );

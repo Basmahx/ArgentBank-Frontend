@@ -9,7 +9,7 @@ const Header = () => {
 
   // Get authentication state from Redux store
   const { token } = useSelector((state) => state.auth);
-  const isAuthenticated = !!token;
+  const isAuthenticated = !!token; // isAuthenticated devient vrai si un token existe.
   const { profile } = useSelector((state) => state.user);
   const userName = profile?.username;
 
