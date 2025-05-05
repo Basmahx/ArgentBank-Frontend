@@ -15,7 +15,7 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("token", data.body?.token || "");
 
       return {
-        user: data.body, // Assuming user details are inside "body"
+        user: data.body,
         token: data.body?.token || "",
       };
     } catch (error) {

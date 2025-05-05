@@ -1,5 +1,5 @@
 import React from "react";
-
+// les comptes du dashboard de l’utilisateur.
 const Account = ({ title, amount, description }) => {
   return (
     <section className="account">

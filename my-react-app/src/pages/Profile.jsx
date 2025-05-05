@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchUserProfile, changeUsername } from "../state/profile/UserSlice";
 import Account from "../components/Account";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // lire le global state
   const { profile, loading, error } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.auth);
 
   const [newUsername, setNewUsername] = useState("");
   const [editableUserName, setEditableUserName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+
+  //Si l'utilisateur est connecté (le token existe) mais que le profil n'a pas été récupéré, la fonction sera déclenchée.
+  useEffect(() => {
+    if (!token) {
+      navigate("/Login");
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     if (!profile && token) {
@@ -24,7 +34,7 @@ const Profile = () => {
       setNewUsername(profile.username || "");
     }
   }, [profile]);
-
+  // Si le nouveau nom d'utilisateur est différent de l'ancien, la fonction changeUsername sera dispatché
   const handleSave = (e) => {
     e.preventDefault();
     if (editableUserName && editableUserName !== profile.username) {

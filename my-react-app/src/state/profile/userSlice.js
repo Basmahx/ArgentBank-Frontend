@@ -7,9 +7,10 @@ import { fetchProfileApi, updateUsername } from "../profile/userAPI";
 // Il vérifie d'abord si l'utilisateur est connecté en récupérant le token de `getState()`.
 // En cas de succès, il met à jour l'état avec les informations du profil.
 // En cas d'échec, il renvoie un message d'erreur.
+
 // L'asyncThunk (`changeUsername`) permet de modifier le nom d'utilisateur en envoyant une requête PUT avec le nouveau nom et le token.
 // Si l'appel API réussit, il met à jour le nom d'utilisateur dans l'état.
-// Le réducteur met à jour l'état en fonction du cycle de vie de chaque appel API (en attente, réussi ou rejeté).
+// Le reducer met à jour l'état en fonction du cycle de vie de chaque appel API (en attente, réussi ou rejeté).
 // En cas de rejet, l'état `error` est mis à jour avec l'erreur renvoyée par l'appel API.
 
 export const fetchUserProfile = createAsyncThunk(
@@ -17,7 +18,7 @@ export const fetchUserProfile = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.token; // Get authentication token from state
-      return await fetchProfileApi(token); // Use the correct function name
+      return await fetchProfileApi(token);
     } catch (error) {
       return rejectWithValue(error.message);
     }
